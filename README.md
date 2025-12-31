@@ -61,11 +61,9 @@ Prereqs: Node.js + npm.
 ### Deployment notes
 
 - Styling is built with Tailwind (no CDN dependency).
-- If deploying under a subpath (e.g. GitHub Pages), set Vite's `base` in `vite.config.ts`.
-
-### Fonts
-
-This app is set up to use a self-hosted Inter font (no Google Fonts request). See `public/fonts/README.md`.
+- Build output is in `dist`.
+- Vercel/Netlify: build command `npm run build`, output/publish directory `dist`.
+- GitHub Pages: build with `npm run build:github` (or set `VITE_BASE` to your subpath when building).
 
 ## Notes / Limitations
 

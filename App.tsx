@@ -6,6 +6,7 @@ import { LinkList } from './components/LinkList';
 import { ResultDisplay } from './components/ResultDisplay';
 import { Sidebar } from './components/Sidebar';
 import { Instructions } from './components/Instructions';
+import { Footer } from './components/Footer';
 
 const App: React.FC = () => {
   const { 
@@ -115,6 +116,8 @@ const App: React.FC = () => {
           </div>
 
         </div>
+
+        <Footer />
       </div>
     </div>
   );
