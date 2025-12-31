@@ -23,6 +23,7 @@ export const LinkItem: React.FC<LinkItemProps> = ({
   const [isEditing, setIsEditing] = useState(false);
   const [editValue, setEditValue] = useState(item.label || '');
   const inputRef = useRef<HTMLInputElement>(null);
+  const ignoreNextBlurRef = useRef(false);
 
   // Defensive check: Ensure listIds exists before filtering
   const currentListIds = item.listIds || [];
@@ -40,11 +41,13 @@ export const LinkItem: React.FC<LinkItemProps> = ({
   };
 
   const handleSaveEdit = () => {
+    ignoreNextBlurRef.current = true;
     onUpdateLabel(item.id, editValue);
     setIsEditing(false);
   };
 
   const handleCancelEdit = () => {
+    ignoreNextBlurRef.current = true;
     setIsEditing(false);
   };
 
@@ -90,7 +93,13 @@ export const LinkItem: React.FC<LinkItemProps> = ({
                     value={editValue}
                     onChange={(e) => setEditValue(e.target.value)}
                     onKeyDown={handleKeyDown}
-                    onBlur={handleSaveEdit}
+                    onBlur={() => {
+                      if (ignoreNextBlurRef.current) {
+                        ignoreNextBlurRef.current = false;
+                        return;
+                      }
+                      handleSaveEdit();
+                    }}
                     placeholder="Enter label..."
                     className="flex-1 bg-slate-900 text-white text-sm rounded border border-indigo-500 px-2 py-1 focus:outline-none focus:ring-1 focus:ring-indigo-500"
                 />
@@ -138,8 +147,9 @@ export const LinkItem: React.FC<LinkItemProps> = ({
                 {list.name}
                 <button
                   onClick={() => onRemoveFromList(item.id, list.id)}
-                  className="ml-1 -mr-1 p-1 text-slate-400 hover:text-red-400 focus:outline-none"
+                  className="ml-1 -mr-1 p-1 text-slate-400 hover:text-red-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500/50 rounded"
                   title={`Remove from list ${list.name}`}
+                  aria-label={`Remove from list ${list.name}`}
                 >
                   &times;
                 </button>
@@ -152,7 +162,7 @@ export const LinkItem: React.FC<LinkItemProps> = ({
       {/* Delete Button */}
       <button
         onClick={() => onRemove(item.id)}
-        className="p-2 sm:p-1.5 text-slate-500 hover:text-red-400 hover:bg-red-500/10 rounded-full transition-colors duration-200 focus:outline-none ml-1"
+        className="p-2 sm:p-1.5 text-slate-500 hover:text-red-400 hover:bg-red-500/10 rounded-full transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500/50 ml-1"
         aria-label="Remove item"
         title="Delete Link permanently"
       >

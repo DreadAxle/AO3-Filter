@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ParsedLink, CustomList } from '../types';
 import { LinkItem } from './LinkItem';
 
@@ -29,6 +29,20 @@ export const LinkList: React.FC<LinkListProps> = ({
 }) => {
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
   const [targetListId, setTargetListId] = useState<string>("");
+
+  useEffect(() => {
+    setSelectedIds(prev => {
+      if (prev.size === 0) return prev;
+
+      const visibleIds = new Set(links.map(l => l.id));
+      const next = new Set<string>();
+      for (const id of prev) {
+        if (visibleIds.has(id)) next.add(id);
+      }
+
+      return next.size === prev.size ? prev : next;
+    });
+  }, [links]);
 
   const handleToggleSelection = (id: string) => {
     const newSet = new Set(selectedIds);

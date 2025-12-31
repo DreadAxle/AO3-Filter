@@ -10,8 +10,15 @@ export const parseAndValidateUrl = (input: string): { id: string | null; error: 
     return { id: null, error: "Please enter a valid URL (starting with http:// or https://)." };
   }
 
+  if (urlObj.protocol !== 'https:' && urlObj.protocol !== 'http:') {
+    return { id: null, error: "Please enter a valid http(s) URL." };
+  }
+
   // Domain check
-  if (!urlObj.hostname.endsWith('archiveofourown.org')) {
+  const hostname = urlObj.hostname.toLowerCase();
+  const isAllowedHost =
+    hostname === 'archiveofourown.org' || hostname.endsWith('.archiveofourown.org');
+  if (!isAllowedHost) {
     return { id: null, error: "The URL must be from archiveofourown.org." };
   }
 

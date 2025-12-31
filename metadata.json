@@ -1,5 +1,5 @@
 {
-  "name": "AO3 Filter Parser",
+  "name": "AO3 Filter Generator",
   "description": "A utility tool to extract tag IDs from Archive of Our Own (AO3) feed URLs and generate search query strings.",
   "requestFramePermissions": []
 }

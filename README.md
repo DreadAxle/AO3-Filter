@@ -52,6 +52,11 @@ Prereqs: Node.js + npm.
 - Build: `npm run build`
 - Preview build: `npm run preview`
 
+### Deployment notes
+
+- Styling is built with Tailwind (no CDN dependency).
+- If deploying under a subpath (e.g. GitHub Pages), set Vite's `base` in `vite.config.ts`.
+
 ## Notes / Limitations
 
 - This project only accepts URLs from `archiveofourown.org`.

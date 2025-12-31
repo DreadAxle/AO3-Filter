@@ -26,7 +26,7 @@ export const Instructions: React.FC = () => {
       </button>
       
       {isOpen && (
-        <div className="px-6 pb-6 text-slate-300 text-sm sm:text-base border-t border-slate-700/50 pt-4 animate-in fade-in slide-in-from-top-1 duration-200">
+        <div className="px-6 pb-6 text-slate-300 text-sm sm:text-base border-t border-slate-700/50 pt-4 fade-in-down">
             <div className="grid lg:grid-cols-2 gap-8">
                 
                 {/* App Instructions */}

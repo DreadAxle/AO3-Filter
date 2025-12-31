@@ -39,13 +39,16 @@ export const Sidebar: React.FC<SidebarProps> = ({
       lists
     };
     
-    const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(backup, null, 2));
+    const dataStr = JSON.stringify(backup, null, 2);
+    const blob = new Blob([dataStr], { type: 'application/json;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
     const downloadAnchorNode = document.createElement('a');
-    downloadAnchorNode.setAttribute("href", dataStr);
+    downloadAnchorNode.setAttribute("href", url);
     downloadAnchorNode.setAttribute("download", `ao3_filter_backup_${new Date().toISOString().slice(0, 10)}.json`);
     document.body.appendChild(downloadAnchorNode);
     downloadAnchorNode.click();
     downloadAnchorNode.remove();
+    URL.revokeObjectURL(url);
   };
 
   const handleImportClick = () => {

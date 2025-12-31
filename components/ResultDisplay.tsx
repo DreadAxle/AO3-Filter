@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import { ParsedLink } from '../types';
 
 interface ResultDisplayProps {
@@ -7,15 +7,46 @@ interface ResultDisplayProps {
 
 export const ResultDisplay: React.FC<ResultDisplayProps> = ({ links }) => {
   const [hasCopied, setHasCopied] = useState(false);
-  
+  const [copyError, setCopyError] = useState<string | null>(null);
+
   const generatedQuery = links.map(link => `filter_ids:${link.numericId}`).join(' OR ');
 
   const handleCopy = useCallback(() => {
     if (!generatedQuery) return;
-    navigator.clipboard.writeText(generatedQuery).then(() => {
-      setHasCopied(true);
-      setTimeout(() => setHasCopied(false), 2000);
-    });
+    setCopyError(null);
+
+    const doCopy = async () => {
+      if (navigator.clipboard?.writeText && window.isSecureContext) {
+        await navigator.clipboard.writeText(generatedQuery);
+        return;
+      }
+
+      const textArea = document.createElement('textarea');
+      textArea.value = generatedQuery;
+      textArea.setAttribute('readonly', '');
+      textArea.style.position = 'fixed';
+      textArea.style.top = '0';
+      textArea.style.left = '-9999px';
+      document.body.appendChild(textArea);
+      textArea.focus();
+      textArea.select();
+
+      const ok = document.execCommand('copy');
+      document.body.removeChild(textArea);
+
+      if (!ok) {
+        throw new Error('Copy command failed');
+      }
+    };
+
+    doCopy()
+      .then(() => {
+        setHasCopied(true);
+        setTimeout(() => setHasCopied(false), 2000);
+      })
+      .catch(() => {
+        setCopyError('Copy failed - select the text and copy manually.');
+      });
   }, [generatedQuery]);
 
   return (
@@ -25,14 +56,14 @@ export const ResultDisplay: React.FC<ResultDisplayProps> = ({ links }) => {
         <pre className="text-indigo-300 font-mono text-sm whitespace-pre-wrap break-all flex-1">
           {generatedQuery || <span className="text-slate-600 italic">Result will appear here...</span>}
         </pre>
-        
+
         <div className="mt-4 flex">
-           <button
+          <button
             onClick={handleCopy}
             disabled={!generatedQuery}
             className={`w-full sm:w-auto inline-flex justify-center items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-slate-900 ${
-              hasCopied 
-                ? 'bg-green-600 text-white hover:bg-green-500 focus:ring-green-500' 
+              hasCopied
+                ? 'bg-green-600 text-white hover:bg-green-500 focus:ring-green-500'
                 : 'bg-indigo-600 text-white hover:bg-indigo-500 focus:ring-indigo-500'
             } disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200`}
           >
@@ -57,6 +88,12 @@ export const ResultDisplay: React.FC<ResultDisplayProps> = ({ links }) => {
       <p className="text-xs text-slate-500">
         Paste this into your filter settings or search bar to apply all ID filters at once.
       </p>
+      {copyError && (
+        <p className="text-xs text-red-400" role="alert">
+          {copyError}
+        </p>
+      )}
     </div>
   );
 };
+
