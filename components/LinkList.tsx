@@ -115,7 +115,7 @@ export const LinkList: React.FC<LinkListProps> = ({
                type="checkbox" 
                checked={links.length > 0 && selectedIds.size === links.length}
                onChange={handleSelectAll}
-               className="h-4 w-4 rounded border-slate-600 bg-slate-900 text-indigo-600 focus:ring-indigo-500 cursor-pointer"
+               className="h-5 w-5 sm:h-4 sm:w-4 rounded border-slate-600 bg-slate-900 text-indigo-600 focus:ring-indigo-500 cursor-pointer"
              />
              <span className="text-sm text-slate-400">
                {selectedIds.size} selected
@@ -127,7 +127,7 @@ export const LinkList: React.FC<LinkListProps> = ({
                value={targetListId}
                onChange={(e) => setTargetListId(e.target.value)}
                disabled={selectedIds.size === 0 || lists.length === 0}
-               className="flex-1 sm:w-40 block rounded-md border-slate-600 bg-slate-900 text-white text-xs py-1.5 px-2 focus:ring-indigo-500 focus:border-indigo-500 disabled:opacity-50"
+               className="flex-1 sm:w-40 block rounded-md border-slate-600 bg-slate-900 text-white text-base sm:text-xs py-2 sm:py-1.5 px-2 focus:ring-indigo-500 focus:border-indigo-500 disabled:opacity-50"
              >
                <option value="">Add to list...</option>
                {lists.map(list => (
@@ -137,7 +137,7 @@ export const LinkList: React.FC<LinkListProps> = ({
              <button
                onClick={handleBulkAdd}
                disabled={!targetListId || selectedIds.size === 0}
-               className="px-3 py-1.5 bg-indigo-600 text-white text-xs font-medium rounded hover:bg-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+               className="px-3 py-2 sm:py-1.5 bg-indigo-600 text-white text-xs font-medium rounded hover:bg-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
              >
                Add
              </button>
@@ -145,7 +145,7 @@ export const LinkList: React.FC<LinkListProps> = ({
         </div>
       )}
       
-      <div className="space-y-3 max-h-[500px] overflow-y-auto pr-2 custom-scrollbar">
+      <div className="space-y-3 max-h-none sm:max-h-[500px] overflow-y-visible sm:overflow-y-auto pr-2 custom-scrollbar">
         {links.length === 0 ? (
           <div className="text-center py-12 border-2 border-dashed border-slate-700 rounded-lg bg-slate-800/30">
             {searchQuery ? (

@@ -46,7 +46,7 @@ export const InputForm: React.FC<InputFormProps> = ({ onAdd }) => {
             <label htmlFor="url-input" className="block text-sm font-medium text-slate-300 mb-1">
               Tag URL
             </label>
-            <div className="flex gap-2">
+            <div className="flex flex-col sm:flex-row gap-2">
               <input
                 id="url-input"
                 type="text"
@@ -61,7 +61,7 @@ export const InputForm: React.FC<InputFormProps> = ({ onAdd }) => {
               <button
                 type="submit"
                 disabled={!inputValue.trim()}
-                className="inline-flex items-center px-6 py-3 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-slate-800 focus:ring-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                className="w-full sm:w-auto inline-flex justify-center items-center px-6 py-3 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-slate-800 focus:ring-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
               >
                 Add
               </button>

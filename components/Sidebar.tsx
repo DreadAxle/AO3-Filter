@@ -121,7 +121,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                   if (activeListId === list.id) onSelectList(null);
                 }
               }}
-              className={`ml-2 p-1 text-slate-500 hover:text-red-400 opacity-0 group-hover:opacity-100 transition-opacity ${activeListId === list.id ? 'text-indigo-200' : ''}`}
+              className={`ml-2 p-2 sm:p-1 text-slate-500 hover:text-red-400 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 sm:group-focus-within:opacity-100 sm:focus:opacity-100 transition-opacity focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500/50 rounded ${activeListId === list.id ? 'text-indigo-200' : ''}`}
               title="Delete List"
             >
               <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -142,12 +142,12 @@ export const Sidebar: React.FC<SidebarProps> = ({
             value={newListName}
             onChange={(e) => setNewListName(e.target.value)}
             placeholder="+ New List Name"
-            className="block w-full rounded-md border-slate-600 bg-slate-900 text-white placeholder-slate-500 shadow-sm focus:border-indigo-500 focus:ring-indigo-500/50 text-xs px-3 py-2 border"
+            className="block w-full rounded-md border-slate-600 bg-slate-900 text-white placeholder-slate-500 shadow-sm focus:border-indigo-500 focus:ring-indigo-500/50 text-base sm:text-xs px-3 py-3 sm:py-2 border"
           />
           <button
             type="submit"
             disabled={!newListName.trim()}
-            className="w-full inline-flex justify-center items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-500 focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full inline-flex justify-center items-center px-3 py-2.5 sm:py-1.5 border border-transparent text-xs font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-500 focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed"
           >
             Create List
           </button>
@@ -159,14 +159,14 @@ export const Sidebar: React.FC<SidebarProps> = ({
           <div className="flex gap-2">
             <button
               onClick={handleExport}
-              className="flex-1 bg-slate-700 hover:bg-slate-600 text-slate-200 text-xs py-1.5 rounded transition-colors"
+              className="flex-1 bg-slate-700 hover:bg-slate-600 text-slate-200 text-xs py-2.5 sm:py-1.5 rounded transition-colors"
               title="Download JSON backup"
             >
               Export
             </button>
             <button
               onClick={handleImportClick}
-              className="flex-1 bg-slate-700 hover:bg-slate-600 text-slate-200 text-xs py-1.5 rounded transition-colors"
+              className="flex-1 bg-slate-700 hover:bg-slate-600 text-slate-200 text-xs py-2.5 sm:py-1.5 rounded transition-colors"
               title="Load JSON backup"
             >
               Import

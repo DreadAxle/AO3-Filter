@@ -65,7 +65,7 @@ export const LinkItem: React.FC<LinkItemProps> = ({
           type="checkbox"
           checked={selected}
           onChange={() => onToggleSelection(item.id)}
-          className="h-4 w-4 rounded border-slate-600 bg-slate-900 text-indigo-600 focus:ring-indigo-500 focus:ring-offset-slate-800 cursor-pointer"
+          className="h-5 w-5 sm:h-4 sm:w-4 rounded border-slate-600 bg-slate-900 text-indigo-600 focus:ring-indigo-500 focus:ring-offset-slate-800 cursor-pointer"
         />
       </div>
 
@@ -103,7 +103,7 @@ export const LinkItem: React.FC<LinkItemProps> = ({
                              <span className="text-base font-medium text-white truncate">{item.label}</span>
                              <button 
                                 onClick={handleStartEdit}
-                                className="opacity-0 group-hover/label:opacity-100 text-slate-500 hover:text-indigo-400 transition-opacity p-0.5"
+                                className="opacity-100 sm:opacity-0 sm:group-hover/label:opacity-100 sm:group-focus-within/label:opacity-100 sm:focus:opacity-100 text-slate-500 hover:text-indigo-400 transition-opacity p-2 sm:p-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500/50 rounded"
                                 title="Edit Label"
                              >
                                 <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5" viewBox="0 0 20 20" fill="currentColor">
@@ -138,7 +138,7 @@ export const LinkItem: React.FC<LinkItemProps> = ({
                 {list.name}
                 <button
                   onClick={() => onRemoveFromList(item.id, list.id)}
-                  className="ml-1 text-slate-400 hover:text-red-400 focus:outline-none"
+                  className="ml-1 -mr-1 p-1 text-slate-400 hover:text-red-400 focus:outline-none"
                   title={`Remove from list ${list.name}`}
                 >
                   &times;
@@ -152,7 +152,7 @@ export const LinkItem: React.FC<LinkItemProps> = ({
       {/* Delete Button */}
       <button
         onClick={() => onRemove(item.id)}
-        className="p-1.5 text-slate-500 hover:text-red-400 hover:bg-red-500/10 rounded-full transition-colors duration-200 focus:outline-none ml-1"
+        className="p-2 sm:p-1.5 text-slate-500 hover:text-red-400 hover:bg-red-500/10 rounded-full transition-colors duration-200 focus:outline-none ml-1"
         aria-label="Remove item"
         title="Delete Link permanently"
       >

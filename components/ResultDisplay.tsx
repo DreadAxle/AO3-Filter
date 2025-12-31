@@ -26,11 +26,11 @@ export const ResultDisplay: React.FC<ResultDisplayProps> = ({ links }) => {
           {generatedQuery || <span className="text-slate-600 italic">Result will appear here...</span>}
         </pre>
         
-        <div className="mt-4 flex justify-end">
+        <div className="mt-4 flex">
            <button
             onClick={handleCopy}
             disabled={!generatedQuery}
-            className={`inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-slate-900 ${
+            className={`w-full sm:w-auto inline-flex justify-center items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-slate-900 ${
               hasCopied 
                 ? 'bg-green-600 text-white hover:bg-green-500 focus:ring-green-500' 
                 : 'bg-indigo-600 text-white hover:bg-indigo-500 focus:ring-indigo-500'
