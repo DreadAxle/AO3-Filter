@@ -2,6 +2,8 @@
   "name": "ao3-filter-parser",
   "private": true,
   "version": "1.0.0",
+  "description": "A client-side helper that extracts numeric AO3 tag IDs from feed URLs and generates filter_ids search queries.",
+  "license": "MIT",
   "type": "module",
   "scripts": {
     "dev": "vite",

@@ -56,6 +56,15 @@ const App: React.FC = () => {
     setSearchQuery(''); // Reset search when switching lists
   };
 
+  const handleImportData = (data: unknown) => {
+    const result = importData(data);
+    if (result.success) {
+      setActiveListId(null);
+      setSearchQuery('');
+    }
+    return result;
+  };
+
   return (
     <div className="min-h-[100dvh] bg-slate-900 py-4 sm:py-8 px-3 sm:px-6 lg:px-8 transition-colors duration-200">
       <div className="max-w-6xl mx-auto space-y-8">
@@ -75,7 +84,7 @@ const App: React.FC = () => {
               onSelectList={handleSelectList}
               onCreateList={createList}
               onDeleteList={deleteList}
-              onImportData={importData}
+              onImportData={handleImportData}
             />
           </div>
 

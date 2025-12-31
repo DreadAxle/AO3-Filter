@@ -6,7 +6,10 @@ export const Instructions: React.FC = () => {
   return (
     <div className="bg-slate-800 rounded-xl border border-slate-700 overflow-hidden shadow-sm">
       <button 
+        type="button"
         onClick={() => setIsOpen(!isOpen)}
+        aria-expanded={isOpen}
+        aria-controls="instructions-panel"
         className="w-full px-6 py-4 flex items-center justify-between text-left hover:bg-slate-700/50 transition-colors focus:outline-none group"
       >
         <span className="flex items-center gap-2 text-lg font-medium text-slate-200 group-hover:text-white transition-colors">
@@ -26,7 +29,10 @@ export const Instructions: React.FC = () => {
       </button>
       
       {isOpen && (
-        <div className="px-6 pb-6 text-slate-300 text-sm sm:text-base border-t border-slate-700/50 pt-4 fade-in-down">
+        <div
+          id="instructions-panel"
+          className="px-6 pb-6 text-slate-300 text-sm sm:text-base border-t border-slate-700/50 pt-4 fade-in-down"
+        >
             <div className="grid lg:grid-cols-2 gap-8">
                 
                 {/* App Instructions */}

@@ -43,6 +43,12 @@ Your data is stored in your browser's `localStorage` (there's no server componen
 - Use **Export** in the sidebar to download a JSON backup.
 - Use **Import** in the sidebar to restore from a backup JSON file.
 
+## Privacy
+
+- Runs entirely client-side (no server).
+- Stores lists/links in your browser's `localStorage`.
+- Export/Import is a local JSON file you download and re-upload (it is not sent anywhere by the app).
+
 ## Development
 
 Prereqs: Node.js + npm.
@@ -57,6 +63,10 @@ Prereqs: Node.js + npm.
 - Styling is built with Tailwind (no CDN dependency).
 - If deploying under a subpath (e.g. GitHub Pages), set Vite's `base` in `vite.config.ts`.
 
+### Fonts
+
+This app is set up to use a self-hosted Inter font (no Google Fonts request). See `public/fonts/README.md`.
+
 ## Notes / Limitations
 
 - This project only accepts URLs from `archiveofourown.org`.
@@ -65,3 +75,7 @@ Prereqs: Node.js + npm.
 ## Disclaimer
 
 Not affiliated with or endorsed by Archive of Our Own.
+
+## License
+
+MIT - see `LICENSE`.

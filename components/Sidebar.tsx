@@ -8,7 +8,7 @@ interface SidebarProps {
   onSelectList: (id: string | null) => void;
   onCreateList: (name: string) => void;
   onDeleteList: (id: string) => void;
-  onImportData: (data: BackupData) => { success: boolean; error?: string };
+  onImportData: (data: unknown) => { success: boolean; error?: string };
 }
 
 export const Sidebar: React.FC<SidebarProps> = ({ 

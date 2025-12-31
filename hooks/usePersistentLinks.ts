@@ -4,6 +4,113 @@ import { parseAndValidateUrl } from '../utils/parser';
 
 const STORAGE_KEY_LINKS = 'ao3_filter_links';
 const STORAGE_KEY_LISTS = 'ao3_filter_lists';
+const CURRENT_BACKUP_VERSION = 1;
+
+const isRecord = (value: unknown): value is Record<string, unknown> =>
+  typeof value === 'object' && value !== null && !Array.isArray(value);
+
+const normalizeStringArray = (value: unknown): string[] => {
+  if (!Array.isArray(value)) return [];
+  return value.filter((v): v is string => typeof v === 'string');
+};
+
+const createId = (): string => {
+  if (typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function') {
+    return crypto.randomUUID();
+  }
+
+  return `${Date.now()}-${Math.random().toString(16).slice(2)}`;
+};
+
+const normalizeBackupData = (
+  raw: unknown
+): { success: true; data: BackupData } | { success: false; error: string } => {
+  if (!isRecord(raw)) {
+    return { success: false, error: "Invalid backup file format." };
+  }
+
+  const rawLinks = raw.links;
+  const rawLists = raw.lists;
+
+  if (!Array.isArray(rawLinks) || !Array.isArray(rawLists)) {
+    return { success: false, error: "Invalid backup file format." };
+  }
+
+  const version =
+    typeof raw.version === 'number' && Number.isFinite(raw.version)
+      ? raw.version
+      : CURRENT_BACKUP_VERSION;
+
+  const timestamp =
+    typeof raw.timestamp === 'number' && Number.isFinite(raw.timestamp)
+      ? raw.timestamp
+      : Date.now();
+
+  const lists: CustomList[] = rawLists
+    .filter(isRecord)
+    .map((list) => {
+      const id = typeof list.id === 'string' ? list.id : null;
+      const name = typeof list.name === 'string' ? list.name.trim() : '';
+
+      if (!id || !name) return null;
+      return { id, name } satisfies CustomList;
+    })
+    .filter((list): list is CustomList => list !== null);
+
+  const listIdSet = new Set(lists.map((l) => l.id));
+
+  const links: ParsedLink[] = rawLinks
+    .filter(isRecord)
+    .map((link): ParsedLink | null => {
+      const id = typeof link.id === 'string' ? link.id : createId();
+
+      const numericIdRaw = link.numericId;
+      const numericId =
+        typeof numericIdRaw === 'string'
+          ? numericIdRaw.trim()
+          : typeof numericIdRaw === 'number' && Number.isFinite(numericIdRaw)
+            ? String(numericIdRaw)
+            : '';
+
+      if (!numericId || !/^\d+$/.test(numericId)) return null;
+
+      const originalUrlRaw = typeof link.originalUrl === 'string' ? link.originalUrl.trim() : '';
+      const originalUrl = originalUrlRaw || `https://archiveofourown.org/tags/${numericId}`;
+
+      const timestampValue =
+        typeof link.timestamp === 'number' && Number.isFinite(link.timestamp)
+          ? link.timestamp
+          : Date.now();
+
+      const label = typeof link.label === 'string' ? link.label.trim() : '';
+
+      const listIds = Array.from(
+        new Set(normalizeStringArray(link.listIds).filter((listId) => listIdSet.has(listId)))
+      );
+
+      const parsedLink: ParsedLink = {
+        id,
+        originalUrl,
+        numericId,
+        timestamp: timestampValue,
+        listIds,
+        ...(label ? { label } : {}),
+      };
+
+      return parsedLink;
+    })
+    .filter((link): link is ParsedLink => link !== null);
+
+  return {
+    success: true,
+    data: {
+      version,
+      timestamp,
+      links,
+      lists,
+    },
+  };
+};
 
 export const usePersistentLinks = () => {
   // --- LINKS STATE ---
@@ -70,7 +177,7 @@ export const usePersistentLinks = () => {
     }
 
     const newLink: ParsedLink = {
-      id: crypto.randomUUID(),
+      id: createId(),
       originalUrl: trimmedInput,
       numericId: numericId,
       timestamp: Date.now(),
@@ -101,7 +208,7 @@ export const usePersistentLinks = () => {
   const createList = useCallback((name: string) => {
     if (!name.trim()) return;
     const newList: CustomList = {
-      id: crypto.randomUUID(),
+      id: createId(),
       name: name.trim()
     };
     setLists(prev => [...prev, newList]);
@@ -141,14 +248,15 @@ export const usePersistentLinks = () => {
 
   // --- IMPORT/EXPORT ACTIONS ---
 
-  const importData = useCallback((data: BackupData) => {
-    if (!data || !Array.isArray(data.links) || !Array.isArray(data.lists)) {
-      return { success: false, error: "Invalid backup file format." };
+  const importData = useCallback((data: unknown) => {
+    const normalized = normalizeBackupData(data);
+    if (!normalized.success) {
+      return { success: false, error: normalized.error };
     }
-    
+
     // Replace current state with backup
-    setLinks(data.links);
-    setLists(data.lists);
+    setLinks(normalized.data.links);
+    setLists(normalized.data.lists);
     return { success: true };
   }, []);
 
