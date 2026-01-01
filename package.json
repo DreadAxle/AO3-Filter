@@ -26,7 +26,8 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "build:github": "tsc && vite build --mode github",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "deploy": "npm run build:github && gh-pages -d dist"
   },
   "dependencies": {
     "react": "^18.2.0",
